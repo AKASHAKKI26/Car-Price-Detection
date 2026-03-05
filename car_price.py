@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 
+@st.cache_data
 def load_data():
     data=pd.read_csv("CarPrice_Assignment.csv")
     return data
@@ -20,11 +21,12 @@ print(data.columns)
 option1=st.selectbox("Select Car",data["CarName"].unique())
 option2=st.selectbox("Select Fuel Type",data["fueltype"].unique())
 user_input=pd.DataFrame({
-    "Car":[option1],
-    "Fuel Type":[option2]
+    "CarName":[option1],
+    "fueltype":[option2]
 })
 user_input = pd.get_dummies(user_input)
 user_input = user_input.reindex(columns=x.columns, fill_value=0)
 if st.button("Predict Price"):
     y_pred=model.predict(user_input)
+
     st.success(y_pred)
